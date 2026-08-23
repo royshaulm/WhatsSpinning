@@ -1,0 +1,340 @@
+.social-feature-root .soc-screen{display:none;flex-direction:column;gap:14px;}
+.social-feature-root .soc-screen.active{display:flex;}
+.social-feature-root .soc-subtopbar{display:none;}
+/* Social feature-only styles. Global design tokens/components come from legacy.css. */
+
+/* =====================================================================
+   WHAT'S SPINNING — SOCIAL FEATURE PROTOTYPE
+   Standalone file, built to be merged into the main app later.
+
+   Namespacing (so a future merge won't collide with the main file):
+     - CSS classes:      soc-*, feed-*, profile-*, achv-*, user-row*
+     - JS globals/consts: SOC_*
+     - JS functions:      soc<Name>()  (camelCase, "soc" prefix)
+     - localStorage keys: soc_*_v1
+
+   Data layer is mocked (SOC_USERS / SOC_COLLECTIONS / SOC_SPINS below)
+   to simulate what would normally come from a backend. Swap
+   socBuildFeed() / socIsFriend() / the SOC_USERS map for real data
+   when wiring this into the main app.
+   ===================================================================== */
+/* ---- topbar for sub-screens (profile / collection / achievements / search / notifications) ---- */
+/* ---- screens ---- */
+.soc-header{padding:4px 2px 4px;}
+.soc-header-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.soc-header-title{font-size:23px;font-weight:900;background:linear-gradient(90deg,var(--pink),var(--pink2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;}
+.soc-header-sub{font-size:12.5px;color:var(--muted);margin-top:3px;}
+/* header icon buttons (search / notifications) — this is where a future
+   single app-wide nav would live; within the social section itself these
+   sit in the feed's own header, Instagram-style, instead of eating up
+   separate slots in that one shared bottom nav */
+.soc-header-icons{display:flex;gap:8px;flex-shrink:0;padding-top:2px;}
+.header-icon-btn{position:relative;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,157,213,.18);color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.header-icon-btn:active{transform:scale(.94);}
+.header-icon-btn .nav-badge{position:absolute;top:-4px;inset-inline-end:-4px;background:var(--pink);color:#fff;font-size:9px;
+  font-weight:800;border-radius:999px;padding:1px 5px;min-width:14px;text-align:center;line-height:1.3;}
+
+/* ---- generic card ---- */
+/* ---- avatar ---- */
+.soc-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(155deg,#5a2160,#7a2b70);
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;border:1px solid rgba(255,157,213,.18);}
+.soc-avatar.small{width:26px;height:26px;font-size:13px;}
+.soc-avatar.xl{width:78px;height:78px;font-size:36px;margin:0 auto 10px;}
+
+/* ---- feed ---- */
+.feed-list{display:flex;flex-direction:column;gap:12px;}
+.feed-load-more{align-self:center;margin-top:4px;}
+.feed-card{background:linear-gradient(155deg,var(--card),var(--card2));border:1px solid rgba(255,157,213,.18);
+  border-inline-start:4px solid transparent;
+  border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);}
+/* clearer visual distinction: "added to collection" vs "played" get their own accent color */
+.feed-card.type-added{border-inline-start-color:#6fe3a0;}
+.feed-card.type-spin{border-inline-start-color:var(--pink);}
+.feed-card-head{display:flex;align-items:center;gap:10px;}
+.feed-card-head-main{display:flex;align-items:center;gap:10px;flex:1;min-width:0;cursor:pointer;}
+.feed-card-who{flex:1;min-width:0;}
+.feed-card-name-line{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap;}
+.feed-card-name{font-weight:800;font-size:14px;}
+.feed-card-verb{font-size:13px;font-weight:600;}
+.feed-card-verb.type-added{color:#6fe3a0;}
+.feed-card-verb.type-spin{color:var(--pink2);}
+.feed-card-time{font-size:11.5px;color:var(--muted);margin-top:1px;}
+.feed-card-record{display:flex;align-items:center;gap:8px;margin-top:12px;background:rgba(255,255,255,.05);
+  border-radius:14px;padding:10px;}
+.feed-card-record-link{display:flex;align-items:center;gap:10px;flex:1;min-width:0;text-decoration:none;color:inherit;cursor:pointer;}
+.feed-record-art{width:58px;height:58px;border-radius:12px;background:rgba(255,255,255,.08);display:flex;
+  align-items:center;justify-content:center;font-size:28px;flex-shrink:0;position:relative;}
+/* small badge overlapping the art's corner — signals "this links out to
+   Discogs" without taking up its own slot in the row (the art + title are
+   already wrapped in the Discogs link, this is just the visible cue) */
+.discogs-badge{position:absolute;bottom:-4px;inset-inline-end:-4px;width:20px;height:20px;
+  display:flex;align-items:center;justify-content:center;background:var(--card2);
+  border-radius:50%;border:2px solid var(--card2);box-shadow:0 1px 4px rgba(0,0,0,.4);}
+.feed-record-info{min-width:0;flex:1;}
+.feed-record-album{font-weight:700;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.feed-record-artist{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+/* per-user ratings (music / pressing) — shown as star ratings, bigger and
+   more prominent than a plain number, in their own boxes to the left of
+   the record-name box */
+.rating-box{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  flex-shrink:0;min-width:64px;height:48px;padding:4px 8px;border-radius:12px;border:1px solid transparent;}
+.rating-box-ic{font-size:13px;line-height:1;}
+.rating-box-stars{font-size:13px;line-height:1;letter-spacing:1px;direction:ltr;}
+.rating-box-stars .star{opacity:.28;}
+.rating-box-stars .star.filled{opacity:1;}
+.rating-box.music{background:rgba(255,157,213,.1);border-color:rgba(255,157,213,.28);}
+.rating-box.music .rating-box-ic{color:var(--pink2);}
+.rating-box.music .star.filled{color:var(--pink2);}
+.rating-box.pressing{background:rgba(255,215,106,.1);border-color:rgba(255,215,106,.28);}
+.rating-box.pressing .rating-box-ic{color:var(--gold);}
+.rating-box.pressing .star.filled{color:var(--gold);}
+/* small "cube" chip — the ownership/wishlist status, in the card's outer
+   header up top */
+.status-box{display:flex;align-items:center;justify-content:center;gap:4px;flex-shrink:0;
+  height:26px;padding:0 10px;border-radius:999px;font-weight:800;font-size:10px;
+  border:1px solid transparent;white-space:nowrap;font-family:inherit;text-decoration:none;}
+.status-box.owned{background:rgba(111,227,160,.15);color:#6fe3a0;border-color:rgba(111,227,160,.35);}
+.status-box.wishlisted{background:rgba(255,215,106,.15);color:var(--gold);border-color:rgba(255,215,106,.35);}
+.status-box.wishlist-btn{background:rgba(255,255,255,.06);color:var(--muted);border-color:rgba(255,157,213,.18);cursor:pointer;}
+.status-box.wishlist-btn:active{transform:scale(.94);}
+.discogs-icon{flex-shrink:0;border-radius:50%;}
+.feed-card-actions{display:flex;gap:8px;margin-top:10px;}
+.feed-action-btn{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,157,213,.18);color:var(--muted);
+  border-radius:12px;padding:8px 6px;font-size:12.5px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:6px;transition:transform .12s ease;}
+.feed-action-btn:active{transform:scale(.96);}
+.feed-action-btn.active{color:var(--pink2);border-color:rgba(255,79,168,.4);background:rgba(255,79,168,.08);}
+.reaction-count{display:inline-flex;align-items:center;gap:3px;}
+/* the reaction-choice row that opens under the actions when tapping the
+   reaction button — a richer alternative to a single like/heart toggle */
+.reaction-picker{display:flex;justify-content:center;gap:6px;margin-top:8px;padding:8px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,157,213,.18);border-radius:999px;}
+.reaction-picker.hidden{display:none;}
+.reaction-choice{background:none;border:none;font-size:19px;padding:4px 8px;border-radius:999px;cursor:pointer;
+  transition:transform .12s ease;}
+.reaction-choice:active{transform:scale(.9);}
+.reaction-choice.active{background:rgba(255,79,168,.18);}
+.feed-comments{margin-top:10px;border-top:1px solid rgba(255,157,213,.18);padding-top:10px;}
+.feed-comments.hidden{display:none;}
+.feed-comments-list{display:flex;flex-direction:column;gap:8px;margin-bottom:8px;max-height:220px;overflow-y:auto;}
+.feed-comment{display:flex;align-items:flex-start;gap:8px;}
+.feed-comment-body{background:rgba(255,255,255,.05);border-radius:12px;padding:6px 10px;font-size:12.5px;flex:1;line-height:1.5;}
+.feed-comment-name{font-weight:800;margin-inline-end:6px;}
+.comment-gif{display:block;max-width:160px;width:100%;border-radius:10px;margin-top:6px;}
+.feed-comment-meta{display:flex;align-items:center;gap:8px;margin-top:3px;}
+.feed-comment-time{font-size:10.5px;color:var(--muted);}
+.comment-action-link{background:none;border:none;color:var(--muted);font-size:10.5px;font-weight:700;
+  text-decoration:underline;cursor:pointer;padding:0;font-family:inherit;}
+.comment-edit-row{display:flex;gap:6px;margin-top:4px;align-items:center;}
+.comment-edit-input{flex:1;min-width:0;background:rgba(255,255,255,.06);border:1px solid rgba(255,157,213,.18);
+  border-radius:999px;padding:6px 12px;color:#fff;font-size:12.5px;}
+.comment-edit-input:focus{outline:none;border-color:rgba(255,79,168,.5);}
+.comment-edit-save{background:linear-gradient(135deg,var(--pink),var(--pinkdeep));border:none;color:#fff;
+  border-radius:999px;padding:0 12px;height:28px;font-weight:800;font-size:11px;cursor:pointer;flex-shrink:0;}
+.comment-edit-cancel{background:rgba(255,255,255,.06);border:1px solid rgba(255,157,213,.18);color:var(--muted);
+  border-radius:999px;padding:0 12px;height:28px;font-weight:800;font-size:11px;cursor:pointer;flex-shrink:0;}
+.feed-comment-input-row{display:flex;gap:6px;}
+.feed-comment-input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,157,213,.18);border-radius:999px;
+  padding:9px 14px;color:#fff;font-size:13px;min-width:0;}
+.feed-comment-input:focus{outline:none;border-color:rgba(255,79,168,.5);}
+.feed-comment-send{background:linear-gradient(135deg,var(--pink),var(--pinkdeep));border:none;color:#fff;
+  border-radius:999px;padding:0 16px;font-weight:800;font-size:12.5px;cursor:pointer;flex-shrink:0;}
+.comment-tool-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,157,213,.18);color:var(--muted);
+  border-radius:999px;padding:0 12px;font-size:13px;font-weight:800;cursor:pointer;flex-shrink:0;height:36px;}
+.comment-tool-btn.active{color:var(--pink2);border-color:rgba(255,79,168,.4);background:rgba(255,79,168,.08);}
+.comment-tool-btn:active{transform:scale(.94);}
+.emoji-picker{margin-top:8px;}
+.emoji-picker.hidden{display:none;}
+.emoji-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,157,213,.18);border-radius:14px;padding:8px;}
+.emoji-btn{background:none;border:none;font-size:19px;padding:5px 0;cursor:pointer;border-radius:8px;}
+.emoji-btn:active{background:rgba(255,255,255,.1);}
+.gif-picker{margin-top:8px;}
+.gif-picker.hidden{display:none;}
+.gif-search-input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,157,213,.18);border-radius:999px;
+  padding:8px 14px;color:#fff;font-size:13px;margin-bottom:8px;}
+.gif-search-input:focus{outline:none;border-color:rgba(255,79,168,.5);}
+.gif-attrib{font-size:10px;color:var(--muted);text-align:center;margin-top:4px;}
+.gif-results{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-height:220px;overflow-y:auto;}
+.gif-thumb{width:100%;height:80px;object-fit:cover;border-radius:10px;cursor:pointer;background:rgba(255,255,255,.05);display:block;}
+.gif-thumb:active{transform:scale(.96);}
+.gif-status{grid-column:1/-1;text-align:center;font-size:12px;color:var(--muted);padding:20px 0;}
+
+/* ---- search / user list ---- */
+#userSearchInput{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,157,213,.18);border-radius:14px;
+  padding:12px 14px;color:#fff;font-size:14px;}
+#userSearchInput:focus{outline:none;border-color:rgba(255,79,168,.5);}
+.search-filter-row{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 2px;}
+.search-filter-chip{flex-shrink:0;background:rgba(255,255,255,.06);border:1px solid rgba(255,157,213,.18);color:var(--muted);
+  font-size:12px;font-weight:700;padding:7px 14px;border-radius:999px;cursor:pointer;white-space:nowrap;font-family:inherit;}
+.search-filter-chip.active{background:linear-gradient(135deg,var(--pink),var(--pinkdeep));color:#fff;border-color:transparent;}
+.search-filter-chip:active{transform:scale(.95);}
+.user-list{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+.user-row{display:flex;align-items:center;gap:12px;background:linear-gradient(155deg,var(--card),var(--card2));
+  border:1px solid rgba(255,157,213,.18);border-radius:14px;padding:10px 12px;cursor:pointer;}
+.user-row-info{flex:1;min-width:0;}
+.user-row-name{font-weight:800;font-size:14px;}
+.user-row-sub{font-size:11.5px;color:var(--muted);margin-top:1px;}
+.user-row-sub.is-friend{color:#8fe3ac;}
+.user-row-chev{color:var(--muted);font-size:18px;}
+
+/* ---- profile ---- */
+.profile-top-card{text-align:center;position:relative;overflow:hidden;padding-top:0;}
+.profile-banner{height:88px;margin:0 -16px 0 -16px;}
+.soc-avatar.xl.profile-avatar-overlap{margin-top:-40px;position:relative;z-index:1;border:3px solid var(--card);}
+.profile-name{font-size:18px;font-weight:900;margin-top:4px;}
+.profile-meta-row{display:flex;justify-content:center;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);margin-top:6px;flex-wrap:wrap;}
+.profile-meta b{color:#fff;}
+.profile-bio{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5;padding:0 6px;}
+.profile-friend-badge{margin-top:12px;display:inline-block;background:rgba(120,220,150,.14);color:#8fe3ac;
+  border:1px solid rgba(120,220,150,.3);border-radius:999px;padding:6px 16px;font-size:12.5px;font-weight:800;
+  cursor:pointer;font-family:inherit;}
+.profile-friend-badge:active{transform:scale(.96);}
+.profile-unfriend-confirm{margin-top:14px;background:rgba(255,90,90,.08);border:1px solid rgba(255,90,90,.3);
+  border-radius:14px;padding:12px;}
+.profile-request-incoming{margin-top:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,157,213,.18);
+  border-radius:14px;padding:12px;}
+.profile-request-text{font-size:12.5px;font-weight:700;margin-bottom:10px;}
+.profile-request-actions{display:flex;gap:8px;justify-content:center;}
+.profile-request-actions .btn{flex:1;}
+.profile-locked-card{text-align:center;}
+.profile-locked-ic{font-size:30px;}
+.profile-locked-text{font-weight:800;font-size:15px;margin-top:4px;}
+.profile-locked-sub{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.6;}
+.profile-stat-row{display:flex;gap:10px;}
+.profile-stat{flex:1;text-align:center;}
+.profile-stat-num{font-size:22px;font-weight:900;color:var(--pink2);}
+.profile-stat-lbl{font-size:11.5px;color:var(--muted);margin-top:2px;}
+.soc-link-card{display:flex;align-items:center;gap:12px;width:100%;text-align:start;
+  background:linear-gradient(155deg,var(--card),var(--card2));
+  border:1px solid rgba(255,157,213,.18);border-radius:var(--radius);padding:14px 16px;color:#fff;font-size:14px;
+  font-weight:800;cursor:pointer;}
+.soc-link-ic{font-size:20px;}
+.soc-link-label{flex:1;}
+.soc-link-chev{color:var(--muted);font-size:18px;}
+.profile-readonly-note{font-size:12px;color:var(--muted);text-align:center;padding:4px 10px 0;line-height:1.6;}
+.profile-section-title{font-size:13px;font-weight:800;color:var(--muted);margin:6px 2px 0;}
+.soc-readonly-tag{align-self:flex-start;font-size:11.5px;color:var(--muted);background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,157,213,.18);border-radius:999px;padding:4px 12px;}
+
+/* ---- collection (read-only) ---- */
+.collection-row{background:linear-gradient(155deg,var(--card),var(--card2));
+  border:1px solid rgba(255,157,213,.18);border-radius:14px;padding:10px;}
+.collection-row-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;}
+.collection-row-body{display:flex;align-items:center;gap:8px;}
+.collection-row-link{display:flex;align-items:center;gap:10px;flex:1;min-width:0;text-decoration:none;color:inherit;cursor:pointer;}
+.collection-row.flash-highlight{animation:socFlashHighlight 1.5s ease-out;}
+@keyframes socFlashHighlight{
+  0%{box-shadow:0 0 0 2px var(--pink);}
+  100%{box-shadow:0 0 0 0 rgba(255,79,168,0);}
+}
+.collection-row-date{font-size:10.5px;color:var(--muted);flex-shrink:0;white-space:nowrap;}
+
+/* ---- achievements (read-only) ---- */
+.achv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.achv-tile{background:linear-gradient(155deg,var(--card),var(--card2));border:1px solid rgba(255,157,213,.18);
+  border-radius:16px;padding:14px 10px;text-align:center;}
+.achv-tile.locked{opacity:.5;}
+.achv-ic{font-size:26px;}
+.achv-name{font-weight:800;font-size:12.5px;margin-top:6px;}
+.achv-progress{font-size:11px;color:var(--muted);margin-top:3px;}
+
+/* ---- buttons / empty states ---- */
+.soc-empty{text-align:center;padding:44px 16px;color:var(--muted);}
+.soc-empty-ic{font-size:36px;margin-bottom:8px;}
+.soc-empty-title{font-weight:800;font-size:15px;color:#fff;}
+.soc-empty-sub{font-size:12.5px;margin-top:4px;line-height:1.7;}
+.soc-empty .btn{margin-top:16px;}
+/* ---- generic modal (record quick-view popup) ---- */
+/* ---- live now (friend currently in a listening session) ---- */
+.live-now-card{position:relative;display:flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,rgba(255,79,168,.14),rgba(255,79,168,.05));
+  border:1px solid rgba(255,79,168,.35);border-radius:16px;padding:12px;margin-bottom:2px;}
+.live-now-badge{position:absolute;top:-8px;inset-inline-start:12px;background:#ff3b3b;color:#fff;font-size:9px;
+  font-weight:900;border-radius:999px;padding:2px 8px;letter-spacing:.3px;box-shadow:0 2px 8px rgba(255,59,59,.5);
+  animation: liveNowPulse 1.6s ease-in-out infinite;}
+@keyframes liveNowPulse{0%,100%{opacity:1;} 50%{opacity:.55;}}
+.live-now-info{flex:1;min-width:0;}
+.live-now-name{font-weight:800;font-size:13px;}
+.live-now-record{font-size:11.5px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.live-now-join-btn{background:linear-gradient(135deg,var(--pink),var(--pinkdeep));border:none;color:#fff;
+  font-weight:800;font-size:11.5px;border-radius:999px;padding:8px 14px;cursor:pointer;flex-shrink:0;white-space:nowrap;}
+.live-now-join-btn:active{transform:scale(.96);}
+.live-now-join-btn:disabled{opacity:.7;}
+
+/* ---- recommendations (feed screen: trending; "people you may know" is
+   rendered in the search screen instead, see socPeopleRecoSectionHtml) ---- */
+.reco-section{display:flex;flex-direction:column;gap:8px;margin-bottom:2px;}
+.reco-title{font-size:12.5px;font-weight:800;color:var(--muted);padding:0 2px;}
+.reco-people-row{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 4px;}
+.reco-person-card{flex-shrink:0;width:112px;background:linear-gradient(155deg,var(--card),var(--card2));
+  border:1px solid rgba(255,157,213,.18);border-radius:16px;padding:12px 10px;text-align:center;}
+.reco-person-name{font-weight:800;font-size:12px;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.reco-person-mutual{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.4;}
+.reco-person-btn{margin-top:8px;width:100%;background:rgba(255,79,168,.14);color:var(--pink2);
+  border:1px solid rgba(255,79,168,.3);border-radius:999px;padding:6px 0;font-size:11px;font-weight:800;cursor:pointer;}
+.reco-person-btn:active{transform:scale(.96);}
+.reco-person-btn.sent{background:rgba(255,255,255,.05);color:var(--muted);cursor:default;}
+/* top-3 trending records among friends — three compact cubes side by side */
+.trending-row{display:flex;gap:8px;}
+.trending-mini-card{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;
+  background:linear-gradient(135deg,rgba(255,215,106,.14),rgba(255,79,168,.1));
+  border:1px solid rgba(255,215,106,.3);border-radius:14px;padding:10px 6px;text-decoration:none;color:inherit;}
+.trending-mini-card:active{transform:scale(.97);}
+.trending-mini-ic{font-size:20px;}
+.trending-mini-album{font-weight:800;font-size:11px;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;}
+.trending-mini-artist{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;}
+.trending-mini-count{font-size:9.5px;color:var(--gold);font-weight:800;margin-top:5px;}
+
+/* ---- notifications ---- */
+.notif-item{display:flex;align-items:flex-start;gap:10px;background:linear-gradient(155deg,var(--card),var(--card2));
+  border:1px solid rgba(255,157,213,.18);border-radius:14px;padding:12px;cursor:pointer;}
+.notif-item.unread{border-color:rgba(255,79,168,.4);}
+.notif-item.unread::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--pink);flex-shrink:0;margin-top:6px;}
+.notif-body{flex:1;min-width:0;}
+.notif-text{font-size:13px;line-height:1.5;}
+.notif-text b{font-weight:800;}
+.notif-time{font-size:11px;color:var(--muted);margin-top:2px;}
+.notif-actions{display:flex;gap:8px;margin-top:8px;}
+.notif-actions .btn{flex:1;padding:8px 0;font-size:12px;}
+
+/* ---- collection-vs-me comparison summary, shown at the top of a
+   friend's collection screen ---- */
+.compare-summary-row{display:flex;gap:10px;margin-bottom:2px;}
+.compare-stat{flex:1;text-align:center;}
+.compare-stat-num{font-size:22px;font-weight:900;color:var(--pink2);}
+.compare-stat-lbl{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.4;}
+
+/* ---- leaderboard ---- */
+.leaderboard-toggle{display:flex;background:rgba(255,255,255,.05);border:1px solid rgba(255,157,213,.18);border-radius:999px;padding:4px;}
+.leaderboard-toggle-btn{flex:1;background:none;border:none;color:var(--muted);font-weight:800;font-size:12px;
+  padding:8px 0;border-radius:999px;cursor:pointer;}
+.leaderboard-toggle-btn.active{background:linear-gradient(135deg,var(--pink),var(--pinkdeep));color:#fff;}
+.leaderboard-month-note{font-size:11px;color:var(--muted);text-align:center;padding:2px 0 4px;}
+.leaderboard-row{display:flex;align-items:center;gap:12px;background:linear-gradient(155deg,var(--card),var(--card2));
+  border:1px solid rgba(255,157,213,.18);border-radius:14px;padding:10px 12px;}
+.leaderboard-row.is-me{border-color:rgba(255,79,168,.4);}
+.leaderboard-rank{width:26px;text-align:center;font-weight:900;font-size:14px;color:var(--muted);flex-shrink:0;}
+.leaderboard-row:nth-child(1) .leaderboard-rank{font-size:20px;}
+.leaderboard-name{flex:1;min-width:0;font-weight:800;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.leaderboard-num{font-weight:900;color:var(--gold);font-size:14px;flex-shrink:0;}
+
+/* ---- leaderboard peek (feed screen: top 3 only, taps through to the
+   full leaderboard screen) ---- */
+.leaderboard-peek{background:linear-gradient(135deg,rgba(255,215,106,.14),rgba(255,79,168,.08));
+  border:1px solid rgba(255,215,106,.3);border-radius:16px;padding:12px 14px;cursor:pointer;}
+.leaderboard-peek:active{transform:scale(.99);}
+.leaderboard-peek-head{display:flex;justify-content:space-between;align-items:center;}
+.leaderboard-peek-title{font-size:12.5px;font-weight:800;color:var(--gold);}
+.leaderboard-peek-toggle{display:flex;gap:4px;}
+.leaderboard-peek-toggle-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,157,213,.18);color:var(--muted);
+  font-size:12px;line-height:1;padding:5px 9px;border-radius:999px;cursor:pointer;}
+.leaderboard-peek-toggle-btn.active{background:linear-gradient(135deg,var(--pink),var(--pinkdeep));color:#fff;border-color:transparent;}
+.leaderboard-peek-toggle-btn:active{transform:scale(.92);}
+.leaderboard-peek-rows{display:flex;flex-direction:column;gap:7px;margin-top:9px;}
+.leaderboard-peek-row{display:flex;align-items:center;gap:8px;}
+.leaderboard-peek-medal{width:20px;text-align:center;font-size:14px;flex-shrink:0;}
+.leaderboard-peek-name{flex:1;min-width:0;font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.leaderboard-peek-num{font-size:12px;font-weight:800;color:var(--gold);flex-shrink:0;}

@@ -1,0 +1,190 @@
+/* Listening-session feature-only styles. Global cards/buttons/inputs/modals come from legacy.css. */
+.listening-feature-root .ls-screen{display:none;flex-direction:column;gap:14px;}
+.listening-feature-root .ls-screen.active{display:flex;}
+.listening-feature-root > .topbar + .ls-screen.active{display:flex;}
+
+/* =====================================================================
+   WHAT'S SPINNING — LISTENING SESSION PROTOTYPE
+   Standalone file, built to be merged into the main app later (same
+   spirit as the social prototype). Namespaced with "ls" so it won't
+   collide with anything else:
+     - CSS classes:       ls-*
+     - JS globals/consts: LS_*
+     - JS functions:      ls<Name>()
+
+   IMPORTANT — what's real vs. simulated here:
+   - The needle-time math (side duration from a tracklist, or a 20-minute
+     default when there's no tracklist) mirrors the main app's existing
+     needleMinutesForSpin()/NEEDLE_DEFAULT_SIDE_MINUTES logic.
+   - "Friends joining" is SIMULATED locally with setTimeout — there is no
+     real-time backend here. Wiring this to real co-listening would need
+     a live channel (e.g. websockets) between participants' devices.
+   ===================================================================== */
+.ls-header{padding:4px 2px 4px;}
+.ls-header-title{font-size:23px;font-weight:900;background:linear-gradient(90deg,var(--pink),var(--pink2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;}
+.ls-header-sub{font-size:12.5px;color:var(--muted);margin-top:3px;}
+/* ---- record picker ---- */
+.ls-record-list{display:flex;flex-direction:column;gap:8px;}
+.ls-record-row{display:flex;align-items:center;gap:12px;background:linear-gradient(155deg,var(--card),var(--card2));
+  border:1px solid rgba(255,157,213,.18);border-radius:14px;padding:10px 12px;cursor:pointer;}
+.ls-record-row.selected{border-color:rgba(255,79,168,.55);background:linear-gradient(155deg,rgba(255,79,168,.14),var(--card2));}
+.ls-record-art{width:44px;height:44px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;
+  align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.ls-record-info{flex:1;min-width:0;}
+.ls-record-album{font-weight:800;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ls-record-artist{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ls-record-check{font-size:16px;color:var(--pink2);flex-shrink:0;}
+.ls-record-last-played{font-size:10.5px;color:var(--muted);flex-shrink:0;white-space:nowrap;}
+#lsRecordSearchInput{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,157,213,.18);border-radius:14px;
+  padding:12px 14px;color:#fff;font-size:14px;}
+#lsRecordSearchInput:focus{outline:none;border-color:rgba(255,79,168,.5);}
+.ls-picker-section-title{font-size:11.5px;font-weight:800;color:var(--muted);margin-bottom:2px;}
+
+.ls-side-row{display:flex;gap:8px;margin-top:4px;}
+.ls-side-btn{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,157,213,.18);color:var(--muted);
+  border-radius:12px;padding:12px 0;font-weight:800;font-size:13px;cursor:pointer;text-align:center;}
+.ls-side-btn.active{background:linear-gradient(135deg,var(--pink),var(--pinkdeep));color:#fff;border-color:transparent;}
+.ls-side-duration{font-size:11.5px;color:var(--muted);text-align:center;margin-top:6px;}
+
+/* ---- invite friends ---- */
+.ls-invite-row{display:flex;flex-wrap:wrap;gap:8px;}
+.ls-invite-chip{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,157,213,.18);
+  border-radius:999px;padding:6px 12px 6px 6px;cursor:pointer;}
+.ls-invite-chip.selected{background:rgba(255,79,168,.14);border-color:rgba(255,79,168,.4);}
+.ls-avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(155deg,#5a2160,#7a2b70);
+  display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;border:1px solid rgba(255,157,213,.18);}
+.ls-avatar.lg{width:34px;height:34px;font-size:16px;}
+.ls-invite-name{font-size:12.5px;font-weight:700;}
+.ls-invite-sent{font-size:10px;color:var(--pink2);font-weight:700;margin-inline-start:2px;}
+
+.ls-demo-toggle{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--muted);}
+.ls-demo-toggle input{accent-color:var(--pink);}
+/* ---- live screen ---- */
+.ls-live-top{display:flex;align-items:center;justify-content:space-between;}
+.ls-leave-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,157,213,.18);color:var(--pink2);
+  font-size:16px;cursor:pointer;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.ls-leave-btn:active{transform:scale(.94);}
+.ls-live-participants{display:flex;gap:-6px;}
+.ls-participant{position:relative;margin-inline-start:-8px;}
+.ls-participant:first-child{margin-inline-start:0;}
+.ls-participant .ls-avatar{opacity:.4;border:2px solid var(--bg);}
+.ls-participant.joined .ls-avatar{opacity:1;}
+.ls-participant-status{position:absolute;bottom:-3px;inset-inline-end:-3px;font-size:10px;background:var(--card);
+  border-radius:50%;width:15px;height:15px;display:flex;align-items:center;justify-content:center;}
+
+.ls-vinyl-wrap{display:flex;justify-content:center;padding:12px 0 4px;position:relative;}
+.ls-vinyl-disc{width:220px;height:220px;border-radius:50%;position:relative;
+  background: repeating-radial-gradient(circle at center, #101010 0 3px, #1c1c1c 3px 6px);
+  box-shadow: 0 14px 40px rgba(0,0,0,.5), inset 0 0 30px rgba(0,0,0,.6);
+  animation: lsSpin 3s linear infinite; animation-play-state: paused;}
+.ls-vinyl-disc.spinning{animation-play-state: running;}
+.ls-vinyl-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:78px;height:78px;
+  border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--pinkdeep));display:flex;align-items:center;
+  justify-content:center;font-size:32px;box-shadow:0 4px 14px rgba(0,0,0,.4);}
+@keyframes lsSpin{from{transform:rotate(0deg);} to{transform:rotate(360deg);}}
+
+/* floating reaction bubbles that pop up over the vinyl when a joined
+   friend reacts (simulated, same spirit as the join toast) */
+.ls-floating-reaction{position:absolute;bottom:30px;font-size:26px;pointer-events:none;
+  animation: lsFloatUp 1.6s ease-out forwards;}
+@keyframes lsFloatUp{
+  0%{transform:translateY(0) scale(.6);opacity:0;}
+  15%{opacity:1;transform:translateY(-14px) scale(1.15);}
+  100%{transform:translateY(-95px) scale(1);opacity:0;}
+}
+.ls-reaction-feed{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;min-height:22px;margin-top:4px;}
+.ls-reaction-chip{font-size:13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,157,213,.18);
+  border-radius:999px;padding:3px 9px;}
+
+.ls-feed-post-note{text-align:center;font-size:11px;color:var(--pink2);background:rgba(255,79,168,.08);
+  border:1px solid rgba(255,79,168,.25);border-radius:999px;padding:6px 12px;margin-top:2px;}
+.ls-feed-post-note.hidden{display:none;}
+
+.ls-now-playing{text-align:center;}
+.ls-np-album{font-weight:900;font-size:17px;}
+.ls-np-artist{font-size:13px;color:var(--muted);margin-top:2px;}
+.ls-np-side{display:inline-block;margin-top:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,157,213,.18);
+  border-radius:999px;padding:4px 14px;font-size:11.5px;font-weight:800;color:var(--pink2);}
+.ls-np-track{margin-top:10px;font-size:13px;color:var(--gold);font-weight:700;min-height:18px;}
+
+.ls-progress-track{width:100%;height:8px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;margin-top:14px;}
+.ls-progress-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--pink2));border-radius:999px;transition:width .25s linear;}
+.ls-time-row{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:6px;}
+
+.ls-controls-row{display:flex;gap:10px;margin-top:6px;}
+.ls-pause-controls{flex:1;display:flex;flex-direction:column;gap:10px;}
+.ls-pause-choice-row{display:flex;gap:10px;}
+.ls-pause-choice-row > *{flex:1;}
+.ls-pause-btn{flex:1;background:linear-gradient(135deg,var(--pink),var(--pinkdeep));border:none;color:#fff;
+  font-weight:800;font-size:15px;border-radius:999px;padding:14px 0;cursor:pointer;box-shadow:0 6px 18px rgba(255,79,168,.35);}
+.ls-pause-btn:active{transform:scale(.97);}
+.ls-skip-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,157,213,.18);color:var(--muted);
+  font-weight:700;font-size:12px;border-radius:999px;padding:0 16px;cursor:pointer;}
+.ls-skip-btn:active{transform:scale(.96);}
+.ls-skip-btn.stop{border-color:rgba(255,90,90,.4);color:#ff8a8a;}
+
+/* ---- tracklist (jump to a specific song within the current side) ---- */
+.ls-tracklist{margin-top:6px;display:flex;flex-direction:column;gap:4px;}
+.ls-tracklist.hidden{display:none;}
+.ls-tracklist-title{font-size:11.5px;font-weight:800;color:var(--muted);padding:0 2px 2px;}
+.ls-track-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;cursor:pointer;
+  background:rgba(255,255,255,.03);}
+.ls-track-row:active{transform:scale(.98);}
+.ls-track-row.current{background:rgba(255,79,168,.14);}
+.ls-track-num{width:18px;text-align:center;font-size:11px;color:var(--muted);flex-shrink:0;}
+.ls-track-row.current .ls-track-num{color:var(--pink2);}
+.ls-track-title{flex:1;min-width:0;font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ls-track-row.current .ls-track-title{color:var(--pink2);}
+.ls-track-time{font-size:11px;color:var(--muted);flex-shrink:0;}
+
+/* ---- join toast ---- */
+.ls-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);z-index:60;
+  background:linear-gradient(155deg,var(--card),var(--card2));border:1px solid rgba(255,79,168,.4);
+  border-radius:999px;padding:10px 20px;font-size:12.5px;font-weight:700;box-shadow:var(--shadow);
+  opacity:0;transition:opacity .3s ease, transform .3s ease;pointer-events:none;}
+.ls-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.ls-toast.hidden{display:none;}
+
+/* ---- floating mini-player ---- */
+.ls-mini-player{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);width:calc(100% - 28px);
+  max-width:452px;background:linear-gradient(135deg,var(--card),var(--card2));
+  border:1px solid rgba(255,79,168,.35);border-radius:16px;padding:8px 14px;display:flex;align-items:center;
+  gap:10px;box-shadow:var(--shadow);cursor:pointer;z-index:40;}
+.ls-mini-player.hidden{display:none;}
+.ls-mini-player:active{transform:translateX(-50%) scale(.98);}
+.ls-mini-disc{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;
+  justify-content:center;font-size:17px;
+  background: repeating-radial-gradient(circle at center, #101010 0 2px, #1c1c1c 2px 4px);
+  animation: lsSpin 3s linear infinite; animation-play-state: paused;}
+.ls-mini-disc.spinning{animation-play-state: running;}
+.ls-mini-info{flex:1;min-width:0;}
+.ls-mini-title{font-weight:800;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ls-mini-sub{font-size:10.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ls-mini-time{font-size:10.5px;color:var(--pink2);font-weight:700;flex-shrink:0;}
+.ls-mini-expand{font-size:13px;color:var(--muted);flex-shrink:0;}
+
+/* ---- side-ended modal ---- */
+/* ---- summary screen ---- */
+.ls-summary-stat-row{display:flex;gap:10px;}
+.ls-summary-stat{flex:1;text-align:center;}
+.ls-summary-stat-num{font-size:22px;font-weight:900;color:var(--pink2);}
+.ls-summary-stat-lbl{font-size:11px;color:var(--muted);margin-top:2px;}
+.ls-summary-joined{font-size:12.5px;color:var(--muted);text-align:center;}
+.ls-rating-block{display:flex;flex-direction:column;gap:6px;}
+.ls-rating-note{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,157,213,.18);border-radius:12px;
+  padding:9px 12px;color:#fff;font-size:12.5px;margin-top:2px;}
+.ls-rating-note:focus{outline:none;border-color:rgba(255,79,168,.5);}
+.ls-rating-note::placeholder{color:var(--muted);}
+.ls-rating-label{display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;}
+.ls-rating-label b{font-weight:900;}
+.ls-star-rating{display:flex;gap:4px;direction:ltr;}
+.ls-star-slot{position:relative;width:28px;height:28px;font-size:26px;line-height:1;}
+.ls-star-bg{position:absolute;inset:0;color:rgba(255,255,255,.15);pointer-events:none;}
+.ls-star-fill{position:absolute;inset:0;overflow:hidden;white-space:nowrap;pointer-events:none;color:var(--pink2);}
+.ls-star-fill.pressing{color:var(--gold);}
+.ls-star-hit{position:absolute;top:0;bottom:0;width:50%;background:none;border:none;padding:0;cursor:pointer;}
+.ls-star-hit.half{left:0;}
+.ls-star-hit.full{left:50%;}
+.ls-saved-note{text-align:center;font-size:12.5px;color:#8fe3ac;font-weight:700;padding:6px 0;}
+.ls-saved-note.hidden{display:none;}
