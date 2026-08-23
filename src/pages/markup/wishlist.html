@@ -1,0 +1,27 @@
+<div class="screen" id="screen-wishlist">
+<div class="topbar">
+<button class="back" onclick="showScreen('browse')" title="Back">‹</button>
+<div class="page-title"><img alt="" src="/assets/legacy/3f6cd46a5b2b0cfe.png"/><span data-i18n="nav.title.wishlist">Wishlist</span></div>
+</div>
+<div class="card hidden" id="wishSuggestCard">
+<div class="qtext" data-i18n="wishlist.suggestTitle" style="font-size:15px;">✨ יכול להיות שתאהב את...</div>
+<div class="hint" data-i18n="wishlist.suggestHint">הצעות המבוססות על האמנים שיש לך הכי הרבה תקליטים שלהם באוסף.</div>
+<div id="wishSuggestList"></div>
+</div>
+<div class="card">
+<button class="btn" data-i18n="wishlist.addToggle" id="wishManualToggleBtn" onclick="toggleWishlistManualForm()" style="width:100%">🌟 הוספה ל-Wishlist</button>
+<div class="hidden" id="wishManualFormWrap">
+<div class="qtext" data-i18n="wishlist.addTitle" style="font-size:16px;margin-top:14px;">🌟 הוספה ל-Wishlist</div>
+<div class="hint" data-i18n="wishlist.addHint">מזינים אמן, אלבום ופרטי פרסינג (אופציונלי) - שאר הנתונים (שנה, סגנון, קאבר) יימשכו אוטומטית מהאינטרנט.</div>
+<label data-i18n="add.artist">אמן</label><input id="wishArtist" type="text"/>
+<label data-i18n="add.album">אלבום</label><input id="wishAlbum" type="text"/>
+<label data-i18n="add.edition">מהדורה (Pressing/Edition)</label><input id="wishEdition" placeholder="First Pressing / Reissue..." type="text"/>
+<label data-i18n="add.color">צבע הוויניל</label><input id="wishColor" placeholder="שחור / ורוד / שקוף..." type="text"/>
+<label data-i18n="wishlist.linkLabel">קישור למהדורה ספציפית (אופציונלי)</label><input id="wishLink" placeholder="https://www.discogs.com/..." type="text"/>
+<label style="display:flex;align-items:center;gap:8px;margin-top:12px;"><input id="wishSigned" style="width:auto;" type="checkbox"/> <span data-i18n="add.signed">חתום על ידי האמן/ית</span></label>
+<button class="btn" data-i18n="wishlist.submit" onclick="submitWishlist()" style="margin-top:16px;width:100%">הוספה לרשימה ✨</button>
+<div id="wishAddResult"></div>
+</div>
+</div>
+<div class="card" id="wishlistList" style="max-height:52vh;overflow:auto;padding:6px 14px;"></div>
+</div>

@@ -1,0 +1,17 @@
+<div class="screen" id="screen-quiz">
+<div class="topbar">
+<button class="back" onclick="showScreen('home')" title="Home">‹</button>
+<div class="page-title"><img alt="" src="/assets/legacy/e58244af5333930b.png"/><span data-i18n="nav.title.quiz">מה מתחשק לי לשמוע?</span></div>
+<span id="qProgressLabel" style="font-size:11.5px;color:var(--muted);flex-shrink:0;"></span>
+</div>
+<div class="progress"><div id="qProgressBar" style="width:0%"></div></div>
+<div class="card">
+<div class="qtext" id="qText"></div>
+<div class="qsub" id="qSub"></div>
+<div class="options" id="qOptions"></div>
+</div>
+<div class="row">
+<button class="btn ghost" data-i18n="quiz.skip" id="skipQBtn" onclick="skipCurrentQuestion()">דלג על השאלה ⏭</button>
+<button class="btn ghost" data-i18n="quiz.finishNow" id="finishNowBtn" onclick="finishQuizNow()">מספיק שאלות, תן לי המלצה כבר 🙏</button>
+</div>
+</div>

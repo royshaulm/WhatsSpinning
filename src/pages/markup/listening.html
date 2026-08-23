@@ -1,0 +1,89 @@
+<div class="screen listening-feature-root" id="screen-listening">
+<div class="topbar"><button class="back" onclick="lsExitToHome()" title="Home">‹</button><div class="page-title"><span>נגנו תקליט</span></div></div>
+
+ SETUP 
+<div class="ls-screen active" id="ls-screen-setup">
+<div class="ls-header">
+<div class="ls-header-title">נגנו תקליט</div>
+<div class="ls-header-sub">בחרו תקליט, הזמינו חברים, ותתחילו</div>
+</div>
+<div class="card ls-card-specific">
+<div style="font-weight:800;font-size:13px;margin-bottom:10px;">איזה תקליט מתנגן?</div>
+<input id="lsRecordSearchInput" oninput="lsRenderRecordPicker()" placeholder="חיפוש לפי אמן או אלבום..." type="text"/>
+<div class="ls-record-list" id="lsRecordPickerList" style="margin-top:10px;"></div>
+</div>
+<div class="card ls-card-specific hidden" id="lsSideCard">
+<div style="font-weight:800;font-size:13px;margin-bottom:10px;">איזה צד?</div>
+<div class="ls-side-row" id="lsSideRow"></div>
+<div class="ls-side-duration" id="lsSideDurationLabel"></div>
+</div>
+<div class="card ls-card-specific">
+<div style="font-weight:800;font-size:13px;margin-bottom:10px;">🎧 מי שומע איתך?</div>
+<div class="ls-invite-row" id="lsInviteRow"></div>
+</div>
+<label class="ls-demo-toggle">
+<input id="lsDemoSpeedToggle" type="checkbox"/>
+      הרצה מהירה (למטרות בדיקה בלבד — מריץ את הזמן פי 30)
+    </label>
+<button class="btn ls-action-btn" disabled="" id="lsStartBtn" onclick="lsStartSession()">▶️ התחל נגינה</button>
+</div>
+ LIVE 
+<div class="ls-screen" id="ls-screen-live">
+<div class="ls-live-top">
+<div style="display:flex;gap:8px;">
+<button class="ls-leave-btn" onclick="lsLeaveSession()" title="עצירת הניגון">✕</button>
+<button class="ls-leave-btn" onclick="lsMinimizePlayer()" title="המשך לגלוש באפליקציה">🔽</button>
+</div>
+<div class="ls-live-participants" id="lsLiveParticipants"></div>
+</div>
+<div class="ls-feed-post-note hidden" id="lsFeedPostNote"></div>
+<div class="ls-vinyl-wrap" id="lsVinylWrap">
+<div class="ls-vinyl-disc" id="lsVinylDisc">
+<div class="ls-vinyl-label" id="lsVinylLabel">💿</div>
+</div>
+</div>
+<div class="ls-now-playing">
+<div class="ls-np-album" id="lsNpAlbum"></div>
+<div class="ls-np-artist" id="lsNpArtist"></div>
+<div class="ls-np-side" id="lsNpSide"></div>
+<div class="ls-np-track" id="lsNpTrack"></div>
+</div>
+<div class="ls-reaction-feed" id="lsReactionFeed"></div>
+<div>
+<div class="ls-progress-track"><div class="ls-progress-fill" id="lsProgressFill" style="width:0%"></div></div>
+<div class="ls-time-row">
+<span id="lsElapsedLabel">0:00</span>
+<span id="lsTotalLabel">0:00</span>
+</div>
+</div>
+<div class="ls-controls-row" id="lsControlsRow"></div>
+<div class="ls-tracklist hidden" id="lsTracklistWrap"></div>
+</div>
+ SUMMARY 
+<div class="ls-screen" id="ls-screen-summary">
+<div class="ls-header">
+<div class="ls-header-title">סיכום הניגון</div>
+</div>
+<div id="lsSummaryContent" style="display:flex;flex-direction:column;gap:14px;"></div>
+</div>
+ side-ended modal 
+<div class="modal-overlay ls-modal-overlay-specific hidden" id="lsSideEndedOverlay">
+<div class="modal-box ls-modal-box-specific" id="lsSideEndedBox"></div>
+</div>
+ join toast 
+<div class="ls-toast hidden" id="lsToast"></div>
+ floating mini-player: visible whenever a session is running but the
+       live screen isn't the one on top, so you can keep browsing while
+       the record keeps "playing" in the background 
+
+
+</div>
+<div class="ls-mini-player hidden" id="lsMiniPlayer" onclick="lsExpandPlayer()">
+<div class="ls-mini-disc" id="lsMiniDisc">💿</div>
+<div class="ls-mini-info">
+<div class="ls-mini-title" id="lsMiniTitle"></div>
+<div class="ls-mini-sub" id="lsMiniSub"></div>
+</div>
+<div class="ls-mini-time" id="lsMiniTime"></div>
+<div class="ls-mini-expand">▲</div>
+</div>

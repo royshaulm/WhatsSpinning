@@ -1,0 +1,72 @@
+<div class="screen" id="screen-history">
+<div class="topbar">
+<button class="back" onclick="showScreen('home')" title="Home">‹</button>
+<div class="page-title"><img alt="" src="/assets/legacy/68c50cc83d4f2d68.png"/><span data-i18n="nav.title.history">היסטוריה וסטטיסטיקות</span></div>
+</div>
+<div class="filter-bar" style="margin-top:2px;">
+<div class="filter-chip" data-i18n="hist.tabStats" id="histTabStats" onclick="setHistoryView('stats')">📊 סטטיסטיקות שמיעה</div>
+<div class="filter-chip" data-i18n="hist.tabCollection" id="histTabCollection" onclick="setHistoryView('collection')">📀 סטטיסטיקות אוסף</div>
+</div>
+<div class="hidden" id="histStatsView">
+<div class="filter-bar" id="histPeriodBar" style="margin-top:6px;"></div>
+<div class="hidden ob-panel" id="histCustomRange">
+<div class="row">
+<select id="histCustomMonthStart"></select>
+<select id="histCustomYearStart"></select>
+</div>
+<div class="hint" style="text-align:center;margin:2px 0;">—</div>
+<div class="row">
+<select id="histCustomMonthEnd"></select>
+<select id="histCustomYearEnd"></select>
+</div>
+<button class="btn" data-i18n="hist.applyRange" onclick="applyCustomHistoryRange()" style="width:100%;margin-top:8px;">החל טווח</button>
+</div>
+<div class="history-stats" style="margin-top:10px;">
+<div class="stat-box"><div class="num" id="histDistinct">0</div><div class="lbl" data-i18n="hist.distinct">תקליטים שסובבו</div></div>
+<div class="stat-box"><div class="num" id="histPartial">0</div><div class="lbl" data-i18n="hist.partial">מהם סיבובים חלקיים</div></div>
+</div>
+<div class="card" id="histTopRecordsCard" style="margin-top:10px;padding:10px 14px;">
+<div class="qtext" data-i18n="hist.topRecords" style="font-size:13.5px;margin-bottom:6px;">💿 התקליטים שניגנת הכי הרבה</div>
+<div id="histTopRecordsList"></div>
+</div>
+<div class="card" id="histTopArtistsCard" style="margin-top:10px;padding:10px 14px;">
+<div class="qtext" data-i18n="hist.topArtists" style="font-size:13.5px;margin-bottom:6px;">🎤 האמנים ששמעת הכי הרבה</div>
+<div id="histTopArtistsList"></div>
+</div>
+<div class="card" id="histGenreCard" style="margin-top:10px;padding:10px 14px;">
+<div class="qtext" data-i18n="hist.byGenre" style="font-size:13.5px;margin-bottom:6px;">🎼 סגנונות מוזיקליים</div>
+<div class="hint" data-i18n="hist.genreDrillHint" style="margin-bottom:4px;">לחצו על סגנון כדי לראות פילוח לתתי-סגנונות</div>
+<div class="chart-bars" id="histGenreRow"></div>
+</div>
+<div class="card" id="histGenderCard" style="margin-top:10px;padding:10px 14px;">
+<div class="qtext" data-i18n="hist.byGender" style="font-size:13.5px;margin-bottom:6px;">🎙 זמרים / זמרות</div>
+<div class="chart-bars" id="histGenderRow"></div>
+</div>
+</div>
+<div class="hidden" id="histCollectionView">
+<div class="history-stats" style="margin-top:10px;justify-content:center;">
+<div class="stat-box" style="flex:0 0 auto;min-width:160px;"><div class="num" id="collDistinctArtists">0</div><div class="lbl" data-i18n="coll.distinctArtists">אמנים שונים</div></div>
+</div>
+<div class="card" id="collGenreCard" style="margin-top:10px;padding:10px 14px;">
+<div class="qtext" data-i18n="hist.byGenre" style="font-size:13.5px;margin-bottom:6px;">🎼 סגנונות מוזיקליים</div>
+<div class="hint" data-i18n="hist.genreDrillHint" style="margin-bottom:4px;">לחצו על סגנון כדי לראות פילוח לתתי-סגנונות</div>
+<div class="chart-bars" id="collGenreRow"></div>
+</div>
+<div class="card" id="collArtistCard" style="margin-top:10px;padding:10px 14px;">
+<div class="qtext" data-i18n="coll.topArtists" style="font-size:13.5px;margin-bottom:6px;">🎤 האמנים עם הכי הרבה תקליטים</div>
+<div class="chart-bars" id="collArtistRow"></div>
+</div>
+<div class="card" id="collYearCard" style="margin-top:10px;padding:10px 14px;">
+<div class="qtext" data-i18n="coll.byYear" style="font-size:13.5px;margin-bottom:6px;">📅 ציר זמן - תקליטים לפי שנת הוצאה</div>
+<div id="collYearRow"></div>
+</div>
+<div class="card" id="collRatingsCard" style="margin-top:10px;padding:10px 14px;">
+<div class="qtext" data-i18n="coll.ratingsTitle" style="font-size:13.5px;margin-bottom:6px;">⭐ דירוגים</div>
+<div id="collRatingsRow"></div>
+</div>
+<div class="card" id="collVariantsCard" style="margin-top:10px;padding:10px 14px;">
+<div class="qtext" data-i18n="coll.variants" style="font-size:13.5px;margin-bottom:6px;">🧬 וריאנטים (תקליטים עם אותו שם)</div>
+<div id="collVariantsList"></div>
+</div>
+</div>
+</div>

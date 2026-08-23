@@ -1,0 +1,30 @@
+<div class="screen" id="screen-quickadd">
+<div class="topbar">
+<button class="back" onclick="showScreen('browse', {keepFilters:true})" title="Back">‹</button>
+<div class="page-title"><img alt="" src="/assets/legacy/325ab115fa72ba8c.png"/><span data-i18n="add.singleTitle">הוספת תקליט בודד</span></div>
+</div>
+<div class="card" style="text-align:center;">
+<button class="btn secondary" data-i18n="barcode.scanBtn" onclick="openBarcodeScan()" style="width:100%;">📷 הוספה לפי סריקת ברקוד</button>
+<div class="hint" data-i18n="barcode.scanBtnHint" style="margin-top:6px;">סורקים את הברקוד שבגב התקליט וממלאים את הפרטים אוטומטית מדיסקוגס</div>
+</div>
+<div class="card">
+<label data-i18n="add.artist">אמן</label><input id="addArtist" type="text"/>
+<label data-i18n="add.album">אלבום</label><input id="addAlbum" type="text"/>
+<label data-i18n="add.type">סוג</label>
+<select id="addType">
+<option data-i18n="type.studio" value="אלבום סטודיו">אלבום סטודיו</option><option data-i18n="type.single" value="סינגל">סינגל</option><option data-i18n="type.ep" value="מיני אלבום">מיני אלבום</option>
+<option data-i18n="type.liveAlbum" value="אלבום לייב">אלבום לייב</option><option data-i18n="type.collection" value="אוסף">אוסף</option><option data-i18n="type.holiday" value="אלבום חג מולד">אלבום חג מולד</option>
+<option data-i18n="type.soundtrack" value="פסקול">פסקול</option><option value="Mixtape">Mixtape</option>
+</select>
+<label data-i18n="add.format">גודל (״)</label><input id="addFormat" placeholder="12 / 7 / 10" type="text"/>
+<label data-i18n="add.year">שנת הוצאה</label><input id="addYear" placeholder="2026" type="text"/>
+<label data-i18n="add.language">שפה</label>
+<select id="addLang"><option data-i18n="lang.english" value="אנגלית">אנגלית</option><option data-i18n="lang.hebrew" value="עברית">עברית</option><option data-i18n="lang.other" value="אחר">אחר</option></select>
+<label data-i18n="add.edition">מהדורה (Pressing/Edition)</label><input id="addEdition" placeholder="First Pressing / Reissue..." type="text"/>
+<label data-i18n="add.color">צבע הוויניל</label><input id="addColor" placeholder="שחור / ורוד / שקוף..." type="text"/>
+<label data-i18n="add.lpCount">כמות LP</label><input id="addLpCount" placeholder="1 / 2 / 3..." type="text"/>
+<label style="display:flex;align-items:center;gap:8px;margin-top:12px;"><input id="addSigned" style="width:auto;" type="checkbox"/> <span data-i18n="add.signed">חתום על ידי האמן/ית</span></label>
+<button class="btn" data-i18n="add.submit" onclick="submitAdd()" style="margin-top:16px;width:100%">הוסף ותייג אוטומטית ✨</button>
+<div id="addResult"></div>
+</div>
+</div>

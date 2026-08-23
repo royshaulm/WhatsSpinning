@@ -1,0 +1,173 @@
+<div class="screen" id="screen-settings">
+<div class="topbar">
+<button class="back" onclick="showScreen('home')" title="Home">‹</button>
+<div class="page-title"><img alt="" class="settings-title-icon" id="settingsTitleIcon" src="/assets/legacy/ad7d6ba17b751f80.png"/><span data-i18n="nav.title.settings">הגדרות</span></div>
+</div>
+<div class="filter-bar" style="margin-top:2px;">
+<div class="filter-chip" data-i18n="settings.tabUser" id="setTabUser" onclick="setSettingsView('user')">👤 משתמש</div>
+<div class="filter-chip" data-i18n="settings.tabNeedle" id="setTabNeedle" onclick="setSettingsView('needle')">🪡 מחט</div>
+<div class="filter-chip" data-i18n="settings.tabSync" id="setTabSync" onclick="setSettingsView('sync')">🔄 סנכרון אוסף</div>
+<div class="filter-chip" data-i18n="settings.tabFeedback" id="setTabFeedback" onclick="setSettingsView('feedback')">💡 הצעות לייעול</div>
+</div>
+<!-- USER TAB -->
+<div class="settings-tab-view" id="setViewUser">
+<div class="card" style="text-align:center;">
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+<div class="settings-avatar-outer">
+<div class="settings-avatar-wrap" id="settingsAvatarWrap">
+<img alt="" class="hidden" id="settingsAvatarImg"/>
+<div class="settings-avatar-placeholder" id="settingsAvatarPlaceholder">🙂</div>
+</div>
+<img alt="" class="pride-flag-patch hidden" data-i18n-title="prize.pride.patchTitle" id="prideFlagPatch" title=""/>
+</div>
+<div class="qtext" id="settingsGreeting" style="font-size:17px;"></div>
+<label class="btn secondary" style="width:100%;text-align:center;cursor:pointer;margin:0;">
+<span data-i18n="settings.uploadPhoto">📷 העלאת תמונת פרופיל</span>
+<input accept="image/*" id="settingsAvatarInput" onchange="handleAvatarUpload(event)" style="display:none;" type="file"/>
+</label>
+</div>
+</div>
+<div class="card">
+<div class="settings-section-label" data-i18n="settings.switchProfileTitle">🔁 החלפת פרופיל</div>
+<div class="switch-profile-link" data-i18n="home.switchProfile" id="switchProfileLink" onclick="switchProfile()">לא את/ה? החלפת פרופיל / אוסף</div>
+</div>
+<div class="card">
+<div class="settings-section-label" data-i18n="settings.signOutTitle">🚪 התנתקות</div>
+<div class="hint" data-i18n="settings.signOutHint">מוחק לצמיתות את כל האוסף, הדירוגים, היסטוריית הניגון וכל מה שנשמר בדפדפן הזה, ומתחיל מאפס. שונה מ"החלפת פרופיל" שרק משנה את השם ומשאיר את האוסף.</div>
+<button class="btn ghost" data-i18n="settings.signOutBtn" onclick="deleteAccountFullReset()" style="width:100%;margin-top:10px;">🗑️ מחיקת חשבון</button>
+</div>
+<div class="card" style="text-align:center;">
+<div class="settings-section-label" data-i18n="settings.sectionLanguage">🌐 שפה</div>
+<div class="qsub" data-i18n="settings.langHint">שינוי שפת התצוגה באפליקציה</div>
+<button class="btn secondary" id="langToggleBtn" onclick="toggleLang()" style="width:100%;margin-top:12px;">🌐 EN</button>
+</div>
+</div>
+<!-- NEEDLE TAB -->
+<div class="settings-tab-view hidden" id="setViewNeedle">
+<div class="card">
+<div class="settings-section-label" data-i18n="settings.needleTitle">🪡 אורך חיי המחט</div>
+<div class="hint" data-i18n="settings.needleHint">בחרו את סוג המחט - אורך החיים המוערך נקבע אוטומטית לפי הסוג. עם כל סיבוב מתועד, נוריד מהמחט בהתאם למשך הזמן האמיתי של האלבום (נמשך אוטומטית) חלקי כמות הצדדים - וגם ניגון חלקי מוריד יחסית.</div>
+<label data-i18n="settings.needleName">שם/דגם המחט (לא חובה)</label><input id="needleName" placeholder="Ortofon 2M Red..." type="text"/>
+<label data-i18n="settings.needleType">סוג המחט</label>
+<select id="needleType"></select>
+<label data-i18n="settings.needleBaseHours">כמות שעות שכבר נוגן עם המחט הזו (אופציונלי)</label><input id="needleBaseHours" min="0" placeholder="0" step="0.5" type="number"/>
+<button class="btn" data-i18n="settings.needleSave" onclick="saveNeedleSettings()" style="width:100%;margin-top:12px;">💾 שמירה</button>
+<div id="needleSettingsResult"></div>
+<div id="needleSettingsProgressWrap" style="margin-top:12px;"></div>
+<button class="btn secondary" data-i18n="settings.needleReplace" onclick="replaceNeedle()" style="width:100%;margin-top:10px;">🔄 החלפתי מחט (איפוס)</button>
+</div>
+</div>
+<!-- SYNC TAB -->
+<div class="settings-tab-view hidden" id="setViewSync">
+<div class="filter-bar" style="margin-top:0;">
+<div class="filter-chip" data-i18n="settings.syncSubDiscogs" id="syncSubTabDiscogs" onclick="setSyncSubView('discogs')">💿 דיסקוגס</div>
+<div class="filter-chip" data-i18n="settings.syncSubSheet" id="syncSubTabSheet" onclick="setSyncSubView('sheet')">☁️ מהגיליון</div>
+<div class="filter-chip" data-i18n="settings.syncSubExcel" id="syncSubTabExcel" onclick="setSyncSubView('excel')">📤 מקובץ אקסל</div>
+</div>
+<div class="settings-tab-view" id="syncSubViewDiscogs">
+<div class="card">
+<div class="qtext" data-i18n="settings.discogsTitle" style="font-size:16px;">💿 דיסקוגס ו-MusicBrainz</div>
+<div class="hint" data-i18n="settings.discogsHint">מעשירים כל תקליט במידע מדויק: קודם מהאוסף שלך בדיסקוגס, אחר כך מהמאגר הכללי של דיסקוגס, ולבסוף מ-MusicBrainz (מאגר חינמי שלא דורש התחברות). תמיד לפי שנת ההוצאה המקורית, לא שנת ההדפסה הספציפית.</div>
+<div id="discogsDisconnectedView">
+<label data-i18n="settings.discogsTokenLabel" style="margin-top:10px;display:block;">אסימון גישה אישי (Personal Access Token)</label>
+<input autocomplete="off" id="discogsTokenInput" placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" spellcheck="false" style="width:100%;" type="text"/>
+<div style="text-align:center;margin-top:4px;"><a data-i18n="settings.discogsGetTokenLink" href="https://www.discogs.com/settings/developers" rel="noopener" target="_blank">איך משיגים טוקן אישי?</a></div>
+<button class="btn secondary" data-i18n="settings.discogsConnectBtn" onclick="discogsOAuthConnect()" style="width:100%;margin-top:10px;">🔗 התחברות לדיסקוגס</button>
+<div class="hint" id="discogsConnectStatus" style="margin-top:8px;text-align:center;"></div>
+</div>
+<div class="hidden" id="discogsConnectedView">
+<div class="qsub" id="discogsConnectedAs" style="margin-top:8px;"></div>
+<button class="btn ghost" data-i18n="settings.discogsDisconnectBtn" onclick="discogsDisconnect()" style="width:100%;margin-top:6px;">התנתקות מדיסקוגס</button>
+</div>
+<button class="btn" data-i18n="settings.discogsSyncBtn" id="discogsSyncBtn" onclick="runDiscogsSync()" style="width:100%;margin-top:14px;">🔄 סנכרון מידע לאוסף</button>
+<div class="hint" data-i18n="settings.discogsSyncNoteNoToken" id="discogsSyncNote" style="margin-top:6px;text-align:center;">בלי חיבור לדיסקוגס, הסנכרון ישתמש רק ב-MusicBrainz.</div>
+<div class="sync-status" id="discogsSyncStatus"></div>
+<div id="discogsSyncResult"></div>
+<div class="hidden" id="discogsImportSection" style="margin-top:16px;border-top:1px solid var(--line);padding-top:14px;">
+<div class="qsub" data-i18n="settings.discogsImportTitle">📥 ייבוא אוסף מלא מדיסקוגס (בלי צורך בגיליון או אקסל)</div>
+<div class="hint" data-i18n="settings.discogsImportHint">שולפים את כל האוסף שלך מדיסקוגס ומוסיפים כתקליטים באפליקציה. תקליטים שכבר קיימים (מהגיליון או מהאקסל) לא ישוכפלו.</div>
+<button class="btn secondary" data-i18n="settings.discogsImportBtn" id="discogsImportBtn" onclick="discogsImportCollectionAsRecords()" style="width:100%;margin-top:10px;">📥 ייבוא האוסף מדיסקוגס</button>
+<div class="sync-status" id="discogsImportStatus"></div>
+<div id="discogsImportResult"></div>
+<div id="discogsImportUndoWrap"></div>
+</div>
+<div id="discogsDuplicatesSection" style="margin-top:16px;border-top:1px solid var(--line);padding-top:14px;">
+<div class="qsub" data-i18n="settings.discogsDupTitle">🔗 רשומות כפולות אפשריות</div>
+<div class="hint" data-i18n="settings.discogsDupHint">בודקים אם יש תקליטים שנראים דומים מאוד (למשל שם שנרשם קצת אחרת) בין המקורות השונים - הגיליון, דיסקוגס והוספות ידניות - כדי לאחד אותם לרשומה אחת.</div>
+<button class="btn ghost" data-i18n="settings.discogsDupScanBtn" onclick="findAndShowDuplicates()" style="width:100%;margin-top:10px;">🔍 בדיקת כפילויות</button>
+<div id="discogsDupResult"></div>
+</div>
+<div id="removedRecordsSection" style="margin-top:16px;border-top:1px solid var(--line);padding-top:14px;">
+<div class="qsub" data-i18n="settings.removedTitle">🗑️ תקליטים שהוסרו</div>
+<div class="hint" data-i18n="settings.removedHint">תקליטים שהסרת מהאוסף (מכפתור ההסרה בעמוד התקליט) מופיעים כאן, גם אם הם עדיין קיימים בגיליון/דיסקוגס. אפשר לשחזר אותם בכל רגע.</div>
+<div id="removedRecordsResult"></div>
+</div>
+</div>
+</div>
+<div class="settings-tab-view hidden" id="syncSubViewSheet">
+<div class="card">
+<div class="qtext" data-i18n="add.syncTitle" style="font-size:16px;">🔄 סנכרון מהגיליון</div>
+<div class="hint" data-i18n="add.syncHint">מושך את הרשימה העדכנית מגיליון Google Sheets, מתייג הכל אוטומטית ומעדכן את האפליקציה. תקליטים שהוספת כאן ידנית נשארים.</div>
+<label data-i18n="ob.sheetIdLabel">מזהה הגיליון (Sheet ID) או קישור מלא</label>
+<input id="sheetIdInput" type="text"/>
+<button class="btn" data-i18n="add.syncNow" onclick="syncFromSheet()" style="margin-top:12px;width:100%">סנכרן עכשיו</button>
+<div class="sync-status" id="syncStatus"></div>
+<div id="syncResult"></div>
+<div id="sheetSyncUndoWrap"></div>
+<button class="btn ghost" data-i18n="add.resyncTracklists" onclick="resyncAllTracklists()" style="margin-top:10px;width:100%">🎵 סנכרון מלא של כל רשימות השירים מההתחלה</button>
+<div class="sync-status" id="resyncTracklistsStatus"></div>
+</div>
+<div class="card" style="margin-top:10px;">
+<div class="qtext" data-i18n="settings.comingSoonSheetTitle" style="font-size:16px;">🚚 הגיליון שלי לתקליטים שבדרך</div>
+<div class="hint" data-i18n="incoming.sheetSyncHint">גיליון (יכול להיות אותו גיליון של האוסף, בטאב נפרד, או גיליון אחר לגמרי) עם רשימת התקליטים שבדרך אליך.</div>
+<label data-i18n="incoming.sheetLabel">מזהה הגיליון (Sheet ID) או קישור מלא</label>
+<input id="comingSoonSheetInput" placeholder="1vjlfSW94JnZJlmxhNmZUQ2fqapQufjxTKuVyghRk52Y" type="text"/>
+<label data-i18n="incoming.tabLabel">שם הגיליון (Tab) בתוך הקובץ</label>
+<input id="comingSoonTabInput" placeholder="Coming Soon" type="text"/>
+<button class="btn" data-i18n="incoming.saveSettings" onclick="saveComingSoonSheetSettings()" style="margin-top:10px;width:100%">שמור וסנכרן</button>
+<div class="sync-status" id="comingSoonSheetSyncStatus"></div>
+</div>
+</div>
+<div class="settings-tab-view hidden" id="syncSubViewExcel">
+<div class="card">
+<div class="qtext" data-i18n="add.uploadTitle" style="font-size:16px;">📤 טעינת אוסף מקובץ אקסל</div>
+<div class="hint" data-i18n="add.uploadHint">אם אין לך גיליון Google Sheets, אפשר להעלות קובץ אקסל (או CSV) בפורמט המתאים - זה יחליף את כל האוסף באפליקציה הזו.</div>
+<a class="btn ghost" data-i18n="ob.downloadTemplate" download="תבנית-מאגר.xlsx" id="templateLink" style="width:100%;margin-top:8px;text-align:center;">⬇️ הורדת תבנית לדוגמה</a>
+<div class="example-link" data-i18n="ob.seeExample" onclick="toggleHidden('exampleTable')">👀 לצפייה בדוגמה איך הפורמט צריך להיראות</div>
+<div class="hidden" id="exampleTable"></div>
+<input accept=".xlsx,.xls,.csv" id="fileInput" onchange="handleExcelUpload(event)" style="margin-top:10px;" type="file"/>
+<div class="sync-status" id="uploadStatus"></div>
+<div id="uploadResult"></div>
+<div id="excelSyncUndoWrap"></div>
+</div>
+<div class="card" style="margin-top:10px;">
+<div class="qtext" data-i18n="incoming.uploadTitle" style="font-size:16px;">🚚 טעינת "מה שבדרך" מקובץ אקסל</div>
+<div class="hint" data-i18n="incoming.uploadHint">אפשר גם לעדכן את רשימת התקליטים שבדרך אליך מקובץ אקסל (או CSV), באותו פורמט כמו הגיליון - זה יחליף את הרשימה הנוכחית.</div>
+<input accept=".xlsx,.xls,.csv" id="comingSoonFileInput" onchange="handleIncomingExcelUpload(event)" style="margin-top:10px;" type="file"/>
+<div class="sync-status" id="comingSoonUploadStatus"></div>
+<div id="comingSoonUploadResult"></div>
+</div>
+</div>
+<div class="settings-section-label" data-i18n="settings.sectionDanger">⚠️ איפוס</div>
+<div class="card">
+<button class="btn ghost" data-i18n="add.resetBtn" onclick="resetToOriginal()" style="width:100%">איפוס לתמונת המאגר המקורית (מוחק תוספות ידניות בדפדפן הזה)</button>
+</div>
+</div>
+<!-- FEEDBACK TAB -->
+<div class="settings-tab-view hidden" id="setViewFeedback">
+<div class="card">
+<div class="qtext" data-i18n="settings.feedbackTitle" style="font-size:16px;">💡 הצעות לייעול</div>
+<div class="hint" data-i18n="settings.feedbackHint">יש לך רעיון לשיפור? ספר/י לי כאן!</div>
+<form data-netlify="true" method="POST" name="whats-spinning-feedback" netlify-honeypot="bot-field" onsubmit="return submitFeedbackForm(event)">
+<input name="form-name" type="hidden" value="whats-spinning-feedback"/>
+<p class="hidden"><label>Don't fill this out: <input name="bot-field"/></label></p>
+<label data-i18n="settings.feedbackNameLabel">שם (אופציונלי)</label>
+<input id="feedbackName" name="name" type="text"/>
+<label data-i18n="settings.feedbackTextLabel">ההצעה שלך</label>
+<textarea id="feedbackMessage" name="message" required=""></textarea>
+<button class="btn" data-i18n="settings.feedbackSubmit" style="margin-top:12px;width:100%" type="submit">שליחה ✨</button>
+</form>
+<div id="feedbackResult"></div>
+</div>
+</div>
+</div>

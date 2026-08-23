@@ -1,0 +1,62 @@
+<div class="screen social-feature-root" id="screen-social">
+
+ shared sub-screen topbar (profile / collection / achievements) 
+<div class="topbar soc-subtopbar" id="subTopbar">
+<button class="back" onclick="socGoBack()">‹</button>
+<div class="page-title" id="subTopbarTitle"></div>
+</div>
+ FEED — this is the root/entry screen of the social section: in the
+       merged app, this is where the single unified nav's "חברתי" tab
+       would land. Search and notifications live one level in from here,
+       reached via the header icons below, not their own nav slots. 
+<div class="soc-screen active" id="screen-feed">
+<div class="soc-header">
+<div class="soc-header-row">
+<div>
+<div class="soc-header-title">חברתי</div>
+<div class="soc-header-sub">מה חדש אצל החברים שלך</div>
+</div>
+<div class="soc-header-icons">
+<button class="header-icon-btn" onclick="socOpenSearch()" title="חיפוש משתמשים">🔍</button>
+<button class="header-icon-btn" onclick="socOpenNotifications()" title="התראות">
+            🔔<span class="nav-badge hidden" id="notifNavBadge">0</span>
+</button>
+</div>
+</div>
+</div>
+<div id="feedLiveNow"></div>
+<div id="leaderboardPeek"></div>
+<div id="feedRecommendations"></div>
+<div class="feed-list" id="feedList"></div>
+</div>
+ SEARCH (sub-screen, opened from the feed header) 
+<div class="soc-screen" id="screen-search">
+<input id="userSearchInput" oninput="socRenderSearch()" placeholder="חיפוש לפי שם..." type="text"/>
+<div class="user-list" id="searchResults"></div>
+</div>
+ NOTIFICATIONS (sub-screen, opened from the feed header) 
+<div class="soc-screen" id="screen-notifications">
+<div id="notificationsList" style="display:flex;flex-direction:column;gap:8px;"></div>
+</div>
+ PROFILE (locked or full, depending on friendship) 
+<div class="soc-screen" id="screen-profile">
+<div id="profileContent" style="display:flex;flex-direction:column;gap:12px;"></div>
+</div>
+ COLLECTION (read-only, friend's) 
+<div class="soc-screen" id="screen-collection">
+<div id="collectionContent" style="display:flex;flex-direction:column;gap:8px;"></div>
+</div>
+ ACHIEVEMENTS (read-only, friend's) 
+<div class="soc-screen" id="screen-achievements">
+<div id="achievementsContent" style="display:flex;flex-direction:column;gap:10px;"></div>
+</div>
+ LEADERBOARD (me + friends, ranked) 
+<div class="soc-screen" id="screen-leaderboard">
+<div id="leaderboardContent" style="display:flex;flex-direction:column;gap:10px;"></div>
+</div>
+ record quick-view popup: opened by tapping a record's art/title 
+<div class="modal-overlay hidden" id="recordPopupOverlay" onclick="if(event.target===this) socCloseRecordPopup()">
+<div class="modal-box" id="recordPopupBox"></div>
+</div>
+
+</div>

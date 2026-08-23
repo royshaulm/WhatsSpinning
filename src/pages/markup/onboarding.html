@@ -1,0 +1,24 @@
+<div class="screen" id="screen-onboarding">
+<div class="card">
+<div class="qtext" data-i18n="ob.welcome" style="font-size:18px;text-align:center;">ברוכים הבאים ל-What's Spinning! 🎶</div>
+<div class="qsub" data-i18n="ob.whatsYourName" style="text-align:center;">איך קוראים לך?</div>
+<input data-i18n-ph="ob.namePh" id="obName" placeholder="השם שלך" style="text-align:center;" type="text"/>
+</div>
+<div class="card">
+<div class="qtext" data-i18n="ob.whereFrom" style="font-size:16px;">איך רוצים להתחיל?</div>
+<div class="qsub" data-i18n="ob.whereFromSub">אפשר לייבא אוסף מדיסקוגס או להתחיל אוסף ריק - ואפשר לייבא מאקסל או מגיליון בכל שלב מאוחר יותר, דרך ההגדרות</div>
+<div class="stack" style="margin-top:10px;">
+<button class="btn secondary" data-i18n="ob.haveDiscogs" onclick="toggleObPanel('obDiscogsPanel')" style="width:100%">💿 יש לי אוסף בדיסקוגס</button>
+<div class="ob-panel hidden" id="obDiscogsPanel">
+<div class="hint" data-i18n="ob.discogsHint">מתחברים עם אסימון גישה אישי (Personal Access Token) ומייבאים את כל האוסף שלך מדיסקוגס ישירות לאפליקציה.</div>
+<label data-i18n="settings.discogsTokenLabel" style="margin-top:10px;display:block;">אסימון גישה אישי (Personal Access Token)</label>
+<input autocomplete="off" id="obDiscogsTokenInput" placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" spellcheck="false" type="text"/>
+<div style="text-align:center;margin-top:4px;"><a data-i18n="settings.discogsGetTokenLink" href="https://www.discogs.com/settings/developers" rel="noopener" target="_blank">איך משיגים טוקן אישי?</a></div>
+<button class="btn" data-i18n="ob.discogsConnectAndImport" onclick="onboardDiscogsConnect()" style="margin-top:10px;width:100%">🔗 התחברות וייבוא אוסף</button>
+<div class="sync-status" id="obDiscogsStatus"></div>
+<div id="obDiscogsResult"></div>
+</div>
+<button class="btn ghost" data-i18n="ob.startFresh" onclick="onboardStartFresh()" style="width:100%">✨ התחלת אוסף חדש</button>
+</div>
+</div>
+</div>

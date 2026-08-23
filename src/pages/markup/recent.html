@@ -1,0 +1,63 @@
+<div class="screen" id="screen-recent">
+<div class="topbar">
+<button class="back" onclick="showScreen('home')" title="Home">‹</button>
+<div class="page-title"><img alt="" src="/assets/legacy/4a2c2fbb62a38fcd.png"/><span data-i18n="nav.title.recent">הפעילות שלי</span></div>
+</div>
+<div class="card activity-header-card">
+<div class="activity-banner" id="activityBanner" onclick="openBannerPicker()">
+<div class="activity-banner-edit" data-i18n-title="activity.chooseBanner" title="בחירת תמונת רקע">🖼️</div>
+</div>
+<div class="settings-avatar-outer activity-avatar-outer">
+<div class="settings-avatar-wrap" id="activityAvatarWrap">
+<img alt="" class="hidden" id="activityAvatarImg"/>
+<div class="settings-avatar-placeholder" id="activityAvatarPlaceholder">🙂</div>
+</div>
+<img alt="" class="pride-flag-patch hidden" id="activityPrideFlagPatch"/>
+</div>
+<div class="qtext" id="activityUsername" style="font-size:18px;margin-top:10px;font-weight:700;"></div>
+<div class="hint" id="activityJoined"></div>
+<div class="activity-friends-row" id="activityFriendsRow" onclick="showScreen('social')">
+<img alt="" class="activity-friends-icon" src="/assets/legacy/174517e014b8f201.png"/>
+<span id="activityFriendsCount">0</span>
+<span data-i18n="activity.friends">חברים</span>
+</div>
+</div>
+<div class="card activity-stat-row">
+<div class="activity-stat" onclick="showScreen('browse')" style="cursor:pointer;">
+<img alt="" src="/assets/legacy/e569e99ec3a989d9.png"/>
+<div class="num" id="activityRecordsCount">0</div>
+<div class="lbl" data-i18n="coll.totalRecords">תקליטים באוסף</div>
+</div>
+<div class="activity-stat">
+<img alt="" src="/assets/legacy/cd2184fa9bba3d43.png"/>
+<div class="num" id="activityHoursCount">0</div>
+<div class="lbl" data-i18n="activity.hoursListened">שעות האזנה</div>
+</div>
+<div class="activity-stat">
+<img alt="" src="/assets/legacy/f969d52476abf7b4.png"/>
+<div class="num" id="activitySpinsCount">0</div>
+<div class="lbl" data-i18n="hist.totalSpins">סיבובים בסך הכל</div>
+</div>
+</div>
+<div class="activity-twin-row">
+<div class="card activity-twin-card">
+<div class="activity-twin-header"><img alt="" src="/assets/legacy/856816110db12a24.png"/><span data-i18n="hist.streak">רצף ימים נוכחי</span></div>
+<div class="num" id="activityStreakCurrent">0</div>
+<div class="hint" id="activityStreakBest"></div>
+</div>
+<div class="card activity-twin-card" onclick="showScreen('prizes')" style="cursor:pointer;">
+<div class="activity-twin-header"><img alt="" id="activityAchvIcon"/><span data-i18n="activity.achievements">הישגים</span></div>
+<div class="num" id="activityAchvCount">0</div>
+<div class="hint" data-i18n="activity.viewAchievements">לצפייה בהישגים ←</div>
+</div>
+</div>
+<div class="hidden" id="favoritesSection" style="margin-top:14px;">
+<div class="hint" data-i18n="home.favorites" style="margin:2px 2px 6px;">⭐ האהובים עלייך</div>
+<div class="fav-carousel" id="favoritesStrip"></div>
+</div>
+<div class="card" style="margin-top:10px;padding:6px 14px;">
+<div class="qtext" data-i18n="activity.recentlyPlayed" style="font-size:13.5px;margin:8px 2px 0;">🕒 האחרונים שניגנתי</div>
+<div id="historyList" style="max-height:50vh;overflow:auto;"></div>
+</div>
+<div class="card" id="recentNeedleCard" style="margin-top:10px;"></div>
+</div>
