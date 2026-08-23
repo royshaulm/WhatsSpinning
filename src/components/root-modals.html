@@ -1,0 +1,42 @@
+<div class="modal-overlay hidden" id="prizeModal">
+<div class="modal-box">
+<button class="modal-close" onclick="closePrizeModal()" title="Close">✕</button>
+<img alt="" id="prizeModalImg"/>
+<div class="pride-flag-stack pride-flag-stack-modal hidden" id="prizeModalFlagStack"></div>
+<div class="qtext" id="prizeModalTitle" style="font-size:16px;text-align:center;margin-top:8px;"></div>
+<div id="prizeModalBody"></div>
+</div>
+</div>
+<div class="modal-overlay hidden" id="tagModal">
+<div class="modal-box">
+<button class="modal-close" onclick="closeTagModal()" title="Close">✕</button>
+<div class="qtext" id="tagModalTitle" style="font-size:16px;margin:0 30px 0 0;"></div>
+<label data-i18n="modal.tags">תגיות (מופרדות בפסיק)</label>
+<input id="tagModalInput" type="text"/>
+<div class="hint" data-i18n="modal.tagsHint">אפשר להוסיף כל תגית שרוצים - מצב רוח, נושא, כל מה שעולה לך בראש.</div>
+<label data-i18n="add.edition">מהדורה (Pressing/Edition)</label><input id="tagModalEdition" type="text"/>
+<label data-i18n="add.color">צבע הוויניל</label><input id="tagModalColor" type="text"/>
+<label data-i18n="add.lpCount">כמות LP</label><input id="tagModalLpCount" type="text"/>
+<label style="display:flex;align-items:center;gap:8px;margin-top:12px;"><input id="tagModalSigned" style="width:auto;" type="checkbox"/> <span data-i18n="add.signed">חתום על ידי האמן/ית</span></label>
+<div class="row" style="margin-top:14px;">
+<button class="btn" data-i18n="modal.save" onclick="saveTagModal()" style="width:100%">שמור</button>
+</div>
+</div>
+</div>
+<div class="modal-overlay hidden" id="coverLightbox">
+<div class="modal-box" id="lightboxContent"></div>
+</div>
+<div class="modal-overlay hidden" id="resultDoneModal">
+<div class="modal-box">
+<div class="qtext" data-i18n="result.doneModalTitle" style="font-size:16px;text-align:center;margin-bottom:10px;">רוצה לתעד את הסיבוב?</div>
+<div class="icon-row" style="justify-content:center;">
+<button class="icon-btn" onclick="logSpinFull('resultDone')" title="Full spin">💿</button>
+<button class="icon-btn" onclick="togglePartialPicker('resultDone')" title="Partial spin">◐</button>
+</div>
+<div class="partial-picker hidden" id="partialPicker_resultDone">
+<div class="hint" data-i18n="spin.howManySides">כמה צדדים ניגנת?</div>
+<div class="side-picker" id="sidePicker_resultDone"></div>
+</div>
+<button class="btn ghost" data-i18n="result.doneModalSkip" onclick="closeResultDoneModal()" style="margin-top:16px;width:100%">עדיין לא ניגנתי, דלג</button>
+</div>
+</div>

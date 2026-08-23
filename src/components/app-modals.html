@@ -1,0 +1,43 @@
+<div class="modal-overlay hidden" id="bannerPickerModal">
+<div class="modal-box">
+<button class="modal-close" onclick="closeBannerPicker()" title="Close">✕</button>
+<div class="qtext" data-i18n="activity.chooseBanner" style="font-size:16px;margin:0 30px 0 0;">בחירת תמונת רקע</div>
+<input data-i18n-ph="browse.searchPh" id="bannerPickerSearch" oninput="renderBannerPickerGrid()" placeholder="חיפוש..." type="text"/>
+<div class="cover-grid" id="bannerPickerGrid" style="max-height:56vh;overflow:auto;margin-top:10px;"></div>
+</div>
+</div>
+<div class="modal-overlay hidden" id="statsFilterModal">
+<div class="modal-box">
+<button class="modal-close" onclick="closeStatsFilterModal()" title="Close">✕</button>
+<div class="qtext" id="statsFilterModalTitle" style="font-size:16px;margin:0 30px 0 0;"></div>
+<div class="cover-grid" id="statsFilterModalGrid" style="max-height:60vh;overflow:auto;margin-top:10px;"></div>
+</div>
+</div>
+<div class="modal-overlay hidden" id="recordQuickModal">
+<div class="modal-box">
+<button class="modal-close" onclick="closeRecordQuickView()" title="Close">✕</button>
+<div id="recordQuickModalBody"></div>
+<button class="btn secondary" data-i18n="stats.openFullRecord" onclick="openRecordDetailFromQuickView()" style="width:100%;margin-top:12px;">פתיחת העמוד המלא</button>
+</div>
+</div>
+<div class="modal-overlay hidden" id="barcodeModal">
+<div class="modal-box">
+<button class="modal-close" onclick="closeBarcodeScan()" title="Close">✕</button>
+<div class="qtext" data-i18n="barcode.modalTitle" style="font-size:16px;margin:0 30px 0 0;">סריקת ברקוד</div>
+<div class="hidden" id="barcodeNeedConnect">
+<div class="hint" data-i18n="barcode.needConnect">כדי לסרוק ברקודים צריך קודם להתחבר לדיסקוגס בהגדרות.</div>
+<button class="btn" data-i18n="barcode.goToSettings" onclick="closeBarcodeScan();showScreen('settings');setSettingsView('sync');" style="width:100%;margin-top:10px;">מעבר להגדרות</button>
+</div>
+<div id="barcodeScanArea">
+<div class="hint" data-i18n="barcode.hint">כוונו את המצלמה לברקוד שבגב התקליט.</div>
+<div id="barcodeReaderEl" style="margin-top:10px;border-radius:12px;overflow:hidden;"></div>
+<div class="sync-status" id="barcodeScanStatus"></div>
+<label data-i18n="barcode.manualLabel" style="margin-top:14px;">או להזין את מספר הברקוד ידנית</label>
+<div class="row">
+<input id="barcodeManualInput" inputmode="numeric" placeholder="7 20642-04252-1" type="text"/>
+<button class="btn secondary" data-i18n="barcode.manualBtn" onclick="submitManualBarcode()">חיפוש</button>
+</div>
+</div>
+<div class="hidden" id="barcodeResultArea"></div>
+</div>
+</div>
